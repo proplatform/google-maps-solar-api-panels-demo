@@ -227,7 +227,7 @@ export default class SolarPanelsMap {
       bounds.extend(coordinate);
     });
 
-    const image = await getDataLayersCanvas(this.apiKey, dataLayers);
+    const image = await getDataLayersCanvas(process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!, dataLayers);
 
     const dataLayerOverlay = DataLayerOverlay.create(bounds, image);
 

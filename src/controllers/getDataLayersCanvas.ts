@@ -4,8 +4,8 @@ import { getTiff, DataLayers } from "@nora-soderlund/google-maps-solar-api";
 //@ts-ignore
 import * as GeoTIFF from "geotiff.js/dist/geotiff.bundle.min.js";
 
-export async function getDataLayerRgbCanvas(apiKey: string, dataLayers: DataLayers) {
-  const tiffImageBuffer = await getTiff(apiKey, dataLayers.rgbUrl!);
+export async function getDataLayerRgbCanvas(dataLayers: DataLayers) {
+  const tiffImageBuffer = await getTiff(process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!, dataLayers.rgbUrl!);
 
   const tiff = await GeoTIFF.fromArrayBuffer(tiffImageBuffer);
   const tiffImage = await tiff.getImage();
@@ -29,8 +29,8 @@ export async function getDataLayerRgbCanvas(apiKey: string, dataLayers: DataLaye
   return canvas;
 };
 
-export async function getDataLayerMaskCanvas(apiKey: string, dataLayers: DataLayers) {
-  const tiffImageBuffer = await getTiff(apiKey, dataLayers.maskUrl!);
+export async function getDataLayerMaskCanvas(dataLayers: DataLayers) {
+  const tiffImageBuffer = await getTiff(process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!, dataLayers.maskUrl!);
 
   const tiff = await GeoTIFF.fromArrayBuffer(tiffImageBuffer);
   const tiffImage = await tiff.getImage();
@@ -56,8 +56,8 @@ export async function getDataLayerMaskCanvas(apiKey: string, dataLayers: DataLay
   return canvas;
 };
 
-export async function getDataLayerFluxCanvas(apiKey: string, dataLayers: DataLayers, scale: number) {
-  const tiffImageBuffer = await getTiff(apiKey, dataLayers.annualFluxUrl!);
+export async function getDataLayerFluxCanvas(dataLayers: DataLayers, scale: number) {
+  const tiffImageBuffer = await getTiff(process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!, dataLayers.annualFluxUrl!);
 
   const tiff = await GeoTIFF.fromArrayBuffer(tiffImageBuffer);
   const tiffImage = await tiff.getImage();
@@ -96,7 +96,7 @@ export async function getDataLayerFluxCanvas(apiKey: string, dataLayers: DataLay
   return canvas;
 };
 
-export default async function getDataLayersCanvas(apiKey: string, dataLayers: DataLayers) {
+export default async function getDataLayersCanvas(dataLayers: DataLayers) {
   const canvas = document.createElement("canvas");
 
   const expectedSize = 2000;
@@ -111,7 +111,7 @@ export default async function getDataLayersCanvas(apiKey: string, dataLayers: Da
   const canvases = await Promise.all([
     //getDataLayerFluxCanvas(apiKey, dataLayers, 1),
     //getDataLayerMaskCanvas(apiKey, dataLayers),
-    getDataLayerRgbCanvas(apiKey, dataLayers)
+    getDataLayerRgbCanvas(dataLayers)
   ]);
   
 
